@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: GCR1Tg4ujkVG0gYk2B+L1s1VhBkLfPOkyqasPVCCwLGd9nMIlthaxUdwdeDKti7E5QjeUpeSl2zvNhpCicOg1wCSFLaIRL/tghI6YOD+PG7thhqvMa04F+13zTf/dxNEq8+tsKHMl1aP8fsD1zdp3g+qvdKo59GG7n+LWP2Tfmvog5jSmH2l6/jaZtrJeB3SVxlImD12w+kPd/e9STel4EMok4oLCu7BU+jsOixAFA2aXFSiWV8zbQ5ZPR6LwA0vzBsP5iyQhFjtl80cTw/SzCaIJLb6Q6300bth2Q9eIuDWgTu9+Z9pwgftn0DGaSGfkIPv3XcJNRKbPdMIFkW9j3G0GFRJ/ALBoGpK8p+NLHR7tKzriU1MtZfjSdYfxuTfRaDYmhY01ZpfnnT1m2jNuSCL43sFZzFiQfTy/Y7NjfJpf4fzr/lRI0j0OIjZHkEucL5HQmiJFAlh29V1/ehWDJWtGnh8YQiCqGbsDe/mv17KBXFOBGzBZGI7CmfZp3/4JshytvNinP80YmKafLkjAWjjS+vNmI6A5+096iCFsO3UnVnNJu8r3JDIrxZXYuqxw0FY41OHiHbmLRA44EfT+g1xvpzMArkRXJtKQxQbYm3/pzqIw84QzwUTSNb698SgFdf8LXJhaDJ5PK5wWYbDxMGOYoAGqG4nBOLUh/xgGkw=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/Fires-and-Firemen-from-the-Eclectic-Magazine-of-Foreign-Literature-Science-and-Art-Vol-XXXV-No__5206
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
