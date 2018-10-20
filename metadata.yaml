@@ -1,5 +1,5 @@
 _repo: Fires-and-Firemen-from-the-Eclectic-Magazine-of-Foreign-Literature-Science-and-Art-Vol-XXXV-No__5206
-_version: 0.2.0
+_version: 0.2.1
 covers:
 - cover_type: generated
   image_path: cover.png
@@ -27,6 +27,7 @@ subjects:
 - !lcsh 'Fire departments'
 - !lcsh 'Fire prevention'
 - !lcc 'TH'
+- GITenberg
 title: 'Fires and Firemen: from the Eclectic Magazine of Foreign Literature, Science
   and Art, Vol XXXV No. 1, May 1855'
 url: http://www.gutenberg.org/ebooks/5206
